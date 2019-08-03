@@ -17,7 +17,7 @@ Main Author: Christian M Diaz
 
 *	GitHub UserName: **@chrisd149**
 
-*	Discord Username: **Miguel149#7640**
+*	Discord Username: **The Miguel#7640**
 
 *	Twitter: **@miguel_TTR**
 
