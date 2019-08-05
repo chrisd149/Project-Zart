@@ -48,7 +48,7 @@ Panda3D and Python 3.7+ is needed to run this program.
 
 This project is licensed under the a modified Unilicense, which allows private use, commercial use, modification, and distribution of this program, but not sales, and makes the program fall under the public domain.  The following exception applies:
 
-**This Panda3D game and/or the author(s) are not affiliated with *The Walt Disney Company* and/or the *Disney Interactive Media Group*(collectively referred to as *"Disney"*), and/or Toontown Rewritten.  All textures/models/sounds used in this program are not mine, and are allowed to be publicly used and distributed, with the exceptition for profit, which isn't allowed at all.  By downloading this game, you agree to release any employees of Disney and/or Toontown Rewritten from any liablity caused to you from the use of Cog Customization.**
+**This Panda3D game and/or the author(s) are not affiliated with *The Walt Disney Company* and/or the *Disney Interactive Media Group*(collectively referred to as *"Disney"*), and/or Toontown Rewritten.  All textures/models/sounds used in this program are not mine, and are allowed to be publicly used and distributed, with the exceptition for profit, which isn't allowed at all.  By downloading this game, you agree to release any employees of Disney and/or Toontown Rewritten from any liablity caused to you from the use of this program.**
 
 
 <h2>Built With</h2>
