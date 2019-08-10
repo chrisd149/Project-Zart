@@ -1,4 +1,4 @@
-# Panda3D-AI-Demo v0.2.1
+# Panda3D-AI-Demo v0.2.2
 A Panda3D demo of some AI functions such as evade, pursue, and wander
 
 Spam the buttons to make the AI pritorize different AI functions.
