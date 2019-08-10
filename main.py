@@ -29,8 +29,8 @@ class Scene(DirectObject):
     def __init__(self):
 
         # onscreentext
-        addOnscreenText(-1.75, .9, "Control the helper toon")
-        # addOnscreenText(1, .9, "Spam the buttons to make the toon pursure the cog or wander around")
+        # addOnscreenText(-1.75, .9, "Control the helper toon")
+        addOnscreenText(1, .9, "Spam the buttons to make the toon pursure the cog or wander around")
 
         #
         addButtons(1.5, 0, .5, "Pursure Cog", self.pursure_cog)
