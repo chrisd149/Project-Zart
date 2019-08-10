@@ -1,23 +1,25 @@
-# Panda3D-AI-Demo v0.2
+# Panda3D-AI-Demo v0.2.1
 A Panda3D demo of some AI functions such as evade, pursue, and wander
 
 Spam the buttons to make the AI pritorize different AI functions.
 
-Video of demo [here](https://www.youtube.com/watch?v=N_ijwWWjZuk&feature=youtu.be)
+Video of demo before AI changes [here](https://www.youtube.com/watch?v=N_ijwWWjZuk&feature=youtu.be)
 
-Panda3D and Python 3.7+ is needed to run this program.
+Video after AI changes [here](https://youtu.be/5YgYSdcfTYU)
+
+Panda3D 1.10.3 and Python 3.7.3 is needed to run this program.
 
 <h2>Prerequisites</h2>
 
 <h3>System Info</h3>	
 
-*	**OS**: Windows 10/8/7/Vista/XP; Mac OS 10.14; Linux Ubuntu 18.04
+*	**OS**: Windows 10/8/7; Mac OS 10.14; Linux Ubuntu 18.04+
 
-*	**CPU**: Single/Dual Core needed, Quad/Multi Core recommended
+*	**CPU**: 2+ ghz Dual Core needed, 3+ ghz Quad/Multi Core recommended
 
 *	**GPU**: CPU interal graphics(UHD 630 or better), any Nividia GPU(GT 730 or better) or Radeon GPU(Vega 3 or better) recommended
 
-*	**Memory**: 512mb+ needed, 1gb+ recommended
+*	**Memory**: 1gb+ needed, 4gb+ recommended, 1gb+ of Video memory recommended
 
 <h3>Software Info</h3>
 
@@ -42,7 +44,7 @@ Panda3D and Python 3.7+ is needed to run this program.
 5.	Go to the Toontown Rewritten Folder, and copy/paste the .mf phase files into your Panda3D folder 
 		- (For this project, only phase_3 through phase_4, are needed). 
 		
-6.	Open main.py with a Python IDE to run the program
+6.	Open main.py with a Python IDE to run the program, such as the Python IDLE.
 
 <h2>License</h2>
 
