@@ -14,7 +14,7 @@ def addOnscreenText(x, y, txt):
                         pos=(x, y),
                         align=TextNode.ALeft,
                         scale=.05,
-                        wordwrap=15)
+                        wordwrap=12)
 
 
 def addButtons(x, y, z, txt, command):
@@ -30,13 +30,15 @@ class Scene(DirectObject):
 
         # onscreentext
         # addOnscreenText(-1.75, .9, "Control the helper toon")
-        addOnscreenText(1, .9, "Spam the buttons to make the toon pursure the cog or wander around")
+        addOnscreenText(1.2, .9, "Spam the buttons to make the toon pursure the cog or wander around")
+        addOnscreenText(-1.8, .95, "Panda3D AI Demo     Version: 0.2.2           Author: Christian Diaz    Build: Panda3D-1.10.3")
+        # inconsistent spacing is to make the text run into the next line
 
-        #
+        # buttons
         addButtons(1.5, 0, .5, "Pursure Cog", self.pursure_cog)
         addButtons(1.5, 0, .6, "Wander", self.wander)
 
-        base.cam.setPosHpr((0, -25, 5), (0, -5, 0))
+        base.cam.setPosHpr((0, -50, 5), (0, -5, 0))
 
         self.load_models()
         self.cog_ai()
