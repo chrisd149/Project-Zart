@@ -1,5 +1,5 @@
-# Project Zart
-A Panda3D demo of some AI functions such as evade, pursue, and wander
+# Project Zart v1.0.0
+A Panda3D project that has some AI functions.  
 
 Spam the buttons to make the AI pritorize different AI functions.
 
@@ -8,6 +8,8 @@ Video of demo before AI changes [here](https://www.youtube.com/watch?v=N_ijwWWjZ
 Video after AI changes [here](https://youtu.be/5YgYSdcfTYU)
 
 Panda3D 1.10.3 and Python 3.7.3 is needed to run this program.
+
+Project used to be named Panda3D AI Demo, now renamed to Project Zart.  More info at a later date :)
 
 <h2>Prerequisites</h2>
 
