@@ -44,11 +44,12 @@ def addButtons(x, y, z, txt, command):
 
 def addEntry(x, y, z, txt, command):
     return DirectEntry(initialText=txt,
+                       text_pos=(-.34, 0, 0),
                        pos=(x, y, z),
                        scale=.05,
                        command=command,
                        numLines=1,
-                       width=1
+                       width=1.75
                        )
 
 
