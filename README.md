@@ -1,4 +1,4 @@
-# Project Zart v1.1.0
+# Project Zart v1.1.1
 Control a toon using a pathfinding function thorugh a maze, using the A* algorithm made by Panda3D. The current pathfinding is buggy, so beware of crashes and other issues.
 
 ![image](https://user-images.githubusercontent.com/48182689/64074317-a13fd380-cc77-11e9-8dc3-c2fb38825f53.png)
