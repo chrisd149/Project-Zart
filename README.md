@@ -1,15 +1,10 @@
-# Project Zart v1.0.0
-A Panda3D project that has some AI functions.  
+# Project Zart v1.1.0
+Control a toon using a pathfinding function thorugh a maze, using the A* algorithm made by Panda3D. The current pathfinding is buggy, so beware of crashes and other issues.
 
-Spam the buttons to make the AI pritorize different AI functions.
+![image](https://user-images.githubusercontent.com/48182689/64074317-a13fd380-cc77-11e9-8dc3-c2fb38825f53.png)
+![image](https://user-images.githubusercontent.com/48182689/64074306-7190cb80-cc77-11e9-8c54-3afec82bc696.png)
 
-Video of demo before AI changes [here](https://www.youtube.com/watch?v=N_ijwWWjZuk&feature=youtu.be)
-
-Video after AI changes [here](https://youtu.be/5YgYSdcfTYU)
-
-Panda3D 1.10.3 and Python 3.7.3 is needed to run this program.
-
-Project used to be named Panda3D AI Demo, now renamed to Project Zart.  More info at a later date :)
+Project used to be named Panda3D AI Demo, now renamed to Project Zart.
 
 <h2>Prerequisites</h2>
 

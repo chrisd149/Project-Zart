@@ -1,6 +1,18 @@
 # Project Zart
 # Formerly Panda3D AI Demo
 
+# Project by Christian Diaz @chrisd149
+
+#  ______                       _____     __________
+#      //         //\\         ||   \\        ||
+#     //         //__\\        ||   //        ||
+#    //         //    \\       ||  ||         ||
+#   //_____    //      \\      ||   \\        ||
+#
+# This is a path finding project that uses a toon actor as a
+# test actor for a path finding function.
+
+
 import direct.directbase.DirectStart
 from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
@@ -8,6 +20,7 @@ from direct.task import Task
 from direct.actor.Actor import Actor
 from panda3d.ai import *
 from direct.gui.DirectGui import *
+import sys
 
 
 def addOnscreenText(x, y, txt):
@@ -20,6 +33,7 @@ def addOnscreenText(x, y, txt):
                         wordwrap=12
                         )
 
+
 def addButtons(x, y, z, txt, command):
     return DirectButton(text=txt,
                         pos=(x, y, z),
@@ -27,20 +41,22 @@ def addButtons(x, y, z, txt, command):
                         command=command
                         )
 
+
 def addEntry(x, y, z, txt, command):
     return DirectEntry(initialText=txt,
-                        pos=(x, y, z),
-                        scale=.05,
-                        command=command,
-                        numLines=1,
-                        width=1
-                        )
+                       pos=(x, y, z),
+                       scale=.05,
+                       command=command,
+                       numLines=1,
+                       width=1
+                       )
+
 
 class Scene(DirectObject):
     def __init__(self):
+        self.log = open('log.txt', "w+")
 
-        # onscreentext
-        # addOnscreenText(-1.75, .9, "Control the helper toon")
+        # OnscreenText objects
         addOnscreenText(1.2, .9, "Spam the buttons to make the toon pursure the cog or wander around")
         addOnscreenText(-1.8, .95, "Project Zart            Version: 1.0.0 Alpha    "
                                    "     Author: Christian Diaz    Build: Panda3D-1.10.3")
@@ -49,22 +65,23 @@ class Scene(DirectObject):
                                  " your value for each field.")
 
         # buttons
-        addButtons(1.5, 0, .5, "Pursure Cog", self.pursure_cog)
-        addButtons(1.5, 0, .6, "Wander", self.wander)
         addButtons(1.5, 0, .4, "Go To", self.go_to)
+        addButtons(1.5, 0, .5, "Exit", self.exit)
+
+        # entries
         self.x_seek_entry = addEntry(1.425, 0, .3, "X", self.X)
         self.y_seek_entry = addEntry(1.525, 0, .3, "Y", self.Y)
 
-        base.cam.setPosHpr((0, -50, 5), (0, -5, 0))
-
         self.load_models()
-        self.cog_ai()
 
     def load_models(self):
+        # loads .egg environment
+        environment = loader.loadModel('meshs/final_blender_plane_col.egg')
+        environment.reparentTo(render)
+        environment.setHpr(0, -90, 0)
 
         # toon starting pos
-        self.toon_start = Point3(0, -25, 0)
-        self.helper_start= Point3(5, -35, 0)
+        self.toon_start = Point3(0, -20, 0)
 
         # toon models
         self.toon_legs = Actor('phase_3\models\char/tt_a_chr_dgs_shorts_legs_1000.bam')
@@ -95,13 +112,15 @@ class Scene(DirectObject):
         self.toon.setPos(self.toon_start)
         self.toon.loop('Idle')
 
-        # cog actor
-        self.cog = Actor(Actor('phase_3.5\models\char\suitA-mod.bam',
-                              {'Walk': 'phase_4\models\char\suitA-walk.bam',
-                                  'Stand': 'phase_4\models\char\suitA-neutral.bam'}))
+        # AI world and character creation
+        self.AIworld = AIWorld(render)
+        self.AIchar = AICharacter("toon", self.toon, 60, 0.1, 5)
+        self.AIworld.addAiChar(self.AIchar)
+        self.AIbehaviors = self.AIchar.getAiBehaviors()
+        # gets all the behaviors for toon ai chars
 
-        self.cog.reparentTo(render)
-        self.cog.setPosHpr((0, 0, 0),(90, 0, 0))
+        base.cam.reparentTo(self.toon)
+        base.cam.setPosHpr((0, -25, 5), (0, -10, 0))
 
     def X(self, textEntered):
         # gets the x entry value and converts it to an interger
@@ -114,68 +133,50 @@ class Scene(DirectObject):
         int(self.get_y)
 
     def go_to(self):
-        self.go_button = addButtons(1.5, 0, -.1, "GO", self.seek)
+        self.go_button = addButtons(1.5, 0, -.1, "GO", self.path_finding)
         self.go_button.setScale(.1)
         self.selected_pos = Point3((float(self.get_x)), (float(self.get_y)), 0)
-        # Moves toon to the selected Point3 Position
+        # Moves toon to the selected LPoint3f Position, via the A* algorithm
 
-    def seek(self):
-        # chases cog, prioitizes pursure over wander, (i.e. will put more
-        # effort in chasing the cog over wandering around)
+        self.arrow = loader.loadModel('models/arrow.egg')
+        self.arrow.reparentTo(render)
+        self.arrow.setPosHprScale(self.selected_pos, (0, 0, 0), (2, 2, 2))
+        self.AIbehaviors.initPathFind('meshs/navmesh.csv')
+        # Loads an arrow at the selected pos
+
+    def path_finding(self):
+        self.arrow.remove_node()
+        del self.arrow
+        # destroys go_button until rendered with go_to button
         self.go_button.destroy()
-        del self.go_button # destroys the go_button
+        del self.go_button  # destroys the go_button
 
-        self.AIchar = AICharacter("toon", self.toon, 100, 0.05, 5)
-        self.AIworld.addAiChar(self.AIchar)
-        self.AIbehaviors = self.AIchar.getAiBehaviors()
-        self.AIbehaviors.seek(self.selected_pos, 1.0)
+        self.AIbehaviors.pathFindTo(self.selected_pos)
 
-        self.toon.loop('Run')
-
-
-    def pursure_cog(self):
-        # chases cog, prioitizes pursure over wander, (i.e. will put more
-        # effort in chasing the cog over wandering around)
-        self.AIchar = AICharacter("toon", self.toon, 100, 0.05, 5)
-        self.AIworld.addAiChar(self.AIchar)
-        self.AIbehaviors = self.AIchar.getAiBehaviors()
-        self.AIbehaviors.pursue(self.cog, .9)
-
-        self.toon.loop('Run')
-
-    def wander(self):
-        # wanders around a point
-        self.AIchar = AICharacter("toon", self.toon, 100, 0.05, 5)
-        self.AIworld.addAiChar(self.AIchar)
-        self.AIbehaviors = self.AIchar.getAiBehaviors()
-        self.AIbehaviors.wander(10, 10, 10, 0.5)
-
-        self.toon.loop('Run')
-
-    def cog_ai(self):
-        # renders AI world
-        self.AIworld = AIWorld(render)
-
-        self.AIchar = AICharacter("cog", self.cog, 100, 0.05, 5)
-        self.AIworld.addAiChar(self.AIchar)
-        self.AIbehaviors = self.AIchar.getAiBehaviors()
-
-        # evades toon, higher prioity over wander
-        self.AIbehaviors.evade(self.toon, 15, 20, 1.0)
-
-        # wanders around a point
-        self.AIbehaviors.wander(-50, 50, 0, 0.5)
-
-        # AI World update
+        # adds PathFindTo task to taskMgr
         taskMgr.add(self.AIUpdate, "AIUpdate")
+        print('\nGoing to', self.selected_pos)
+
+        self.log.write("\nGoing  to ")
+        self.log.write(str(self.selected_pos))
 
     # Updates all AI in self.AIworld
     def AIUpdate(self, task):
         self.AIworld.update()
-        return task.cont
-    # this causes the AI to get a bit wacky when too many
-    # AI updates are made
+        if self.AIbehaviors.behaviorStatus('pathfollow') == 'done':
+            self.toon.loop('Idle')
+            print('\nCompleted task in', task.time, 'seconds')
+            self.log.write('\nCompleted task in')
+            self.log.write(str(task.time))
+            self.log.write('seconds.')
+            return task.done
+        elif self.AIbehaviors.behaviorStatus('pathfollow') != 'done':
+            return task.cont
+
+    @staticmethod
+    def exit():
+        sys.exit()
 
 
-app = Scene()
+scene = Scene()
 base.run()
