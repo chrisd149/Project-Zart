@@ -1,0 +1,147 @@
+<CoordinateSystem> { Z-Up }
+
+<Comment> {
+  "obj2egg obsatcle.obj obsatcle.egg"
+}
+<VertexPool> vpool {
+  <Vertex> 0 {
+    1 1 -1
+    <UV> { 0.375 0 }
+    <Normal> { 0 1 0 }
+  }
+  <Vertex> 1 {
+    -1 1 -1
+    <UV> { 0.625 0 }
+    <Normal> { 0 1 0 }
+  }
+  <Vertex> 2 {
+    -1 1 1
+    <UV> { 0.625 0.25 }
+    <Normal> { 0 1 0 }
+  }
+  <Vertex> 3 {
+    1 1 1
+    <UV> { 0.375 0.25 }
+    <Normal> { 0 1 0 }
+  }
+  <Vertex> 4 {
+    1 -1 1
+    <UV> { 0.375 0.25 }
+    <Normal> { 0 0 1 }
+  }
+  <Vertex> 5 {
+    1 1 1
+    <UV> { 0.625 0.25 }
+    <Normal> { 0 0 1 }
+  }
+  <Vertex> 6 {
+    -1 1 1
+    <UV> { 0.625 0.5 }
+    <Normal> { 0 0 1 }
+  }
+  <Vertex> 7 {
+    -1 -1 1
+    <UV> { 0.375 0.5 }
+    <Normal> { 0 0 1 }
+  }
+  <Vertex> 8 {
+    -1 -1 1
+    <UV> { 0.375 0.5 }
+    <Normal> { -1 0 0 }
+  }
+  <Vertex> 9 {
+    -1 1 1
+    <UV> { 0.625 0.5 }
+    <Normal> { -1 0 0 }
+  }
+  <Vertex> 10 {
+    -1 1 -1
+    <UV> { 0.625 0.75 }
+    <Normal> { -1 0 0 }
+  }
+  <Vertex> 11 {
+    -1 -1 -1
+    <UV> { 0.375 0.75 }
+    <Normal> { -1 0 0 }
+  }
+  <Vertex> 12 {
+    -1 -1 -1
+    <UV> { 0.375 0.75 }
+    <Normal> { 0 -1 0 }
+  }
+  <Vertex> 13 {
+    1 -1 -1
+    <UV> { 0.625 0.75 }
+    <Normal> { 0 -1 0 }
+  }
+  <Vertex> 14 {
+    1 -1 1
+    <UV> { 0.625 1 }
+    <Normal> { 0 -1 0 }
+  }
+  <Vertex> 15 {
+    -1 -1 1
+    <UV> { 0.375 1 }
+    <Normal> { 0 -1 0 }
+  }
+  <Vertex> 16 {
+    1 -1 -1
+    <UV> { 0.125 0.5 }
+    <Normal> { 1 0 0 }
+  }
+  <Vertex> 17 {
+    1 1 -1
+    <UV> { 0.375 0.5 }
+    <Normal> { 1 0 0 }
+  }
+  <Vertex> 18 {
+    1 1 1
+    <UV> { 0.375 0.75 }
+    <Normal> { 1 0 0 }
+  }
+  <Vertex> 19 {
+    1 -1 1
+    <UV> { 0.125 0.75 }
+    <Normal> { 1 0 0 }
+  }
+  <Vertex> 20 {
+    -1 -1 -1
+    <UV> { 0.625 0.5 }
+    <Normal> { 0 0 -1 }
+  }
+  <Vertex> 21 {
+    -1 1 -1
+    <UV> { 0.875 0.5 }
+    <Normal> { 0 0 -1 }
+  }
+  <Vertex> 22 {
+    1 1 -1
+    <UV> { 0.875 0.75 }
+    <Normal> { 0 0 -1 }
+  }
+  <Vertex> 23 {
+    1 -1 -1
+    <UV> { 0.625 0.75 }
+    <Normal> { 0 0 -1 }
+  }
+}
+<Group> root {
+  <Polygon> {
+    <VertexRef> { 0 1 2 3 <Ref> { vpool } }
+  }
+  <Polygon> {
+    <VertexRef> { 4 5 6 7 <Ref> { vpool } }
+  }
+  <Polygon> {
+    <VertexRef> { 8 9 10 11 <Ref> { vpool } }
+  }
+  <Polygon> {
+    <VertexRef> { 12 13 14 15 <Ref> { vpool } }
+  }
+  <Polygon> {
+    <VertexRef> { 16 17 18 19 <Ref> { vpool } }
+  }
+  <Polygon> {
+    <VertexRef> { 20 21 22 23 <Ref> { vpool } }
+  }
+}
