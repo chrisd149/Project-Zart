@@ -24,11 +24,13 @@ from direct.actor.Actor import Actor
 from panda3d.ai import *
 from direct.gui.DirectGui import *
 import sys
+from direct.interval.IntervalGlobal import *
+
 
 def addOnscreenText(x, y, txt):
     return OnscreenText(text=txt,
                         style=1,
-                        fg=(1, 1, 1, 1),
+                        fg=(0, 0, 0, 1),
                         pos=(x, y),
                         align=TextNode.ALeft,
                         scale=.05,
@@ -50,35 +52,40 @@ def addEntry(x, y, z, txt, command):
                        text_pos=(-.34, 0, 0),
                        pos=(x, y, z),
                        scale=.05,
-                       command=command,
                        numLines=1,
+                       command=command,
                        width=1.75
                        )
+
+
+def addFrame(a, b, c, d, x, y, z):
+    return DirectFrame(frameSize=(a, b, c, d),
+                       frameColor=(255, 255, 0, .1),
+                       pos=(x, y, z))
 
 
 class Scene(DirectObject):
     def __init__(self):
         DirectObject.__init__(self)
         self.log = open('log.txt', "w+")
-        open('meshs/navmesh.csv')
-        self.base = base
         self.taskMgr = taskMgr
 
         # OnscreenText objects
-        addOnscreenText(1.2, .9, "Spam the buttons to make the toon pursure the cog or wander around")
         addOnscreenText(-1.8, .95, "Project Zart            Version: 1.2.0 Alpha    "
                                    "     Author: Christian Diaz    Build: Panda3D-1.10.3")
         # inconsistent spacing is to make the text run into the next line
-        addOnscreenText(1.2, .2, "Enter the coordinates of your Go To target, and click the ENTER key after typing in"
+        addOnscreenText(1.2, .4, "Enter the coordinates of your Go To target, and click the ENTER key after typing in"
                                  " your value for each field.")
+        addFrame(-.5, .5, .5, -.5, 1.5, 0, .5)
 
         # buttons
-        self.go_to_button = addButtons(1.5, 0, .4, "Go To", self.go_to)
-        addButtons(1.5, 0, .5, "Exit", self.exit)
+        self.go_to_button = addButtons(1.5, 0, .7, "Go To", self.go_to)
+        addButtons(1.5, 0, .8, "Exit", self.exit)
+        self.obstacle_button = addButtons(-1.0, 0, 0, "Add Obstacle", self.obstacle)
 
         # entries
-        self.x_seek_entry = addEntry(1.425, 0, .3, "X", self.X)
-        self.y_seek_entry = addEntry(1.525, 0, .3, "Y", self.Y)
+        self.x_seek_entry = addEntry(1.425, 0, .6, "X", self.X)
+        self.y_seek_entry = addEntry(1.525, 0, .6, "Y", self.Y)
 
         self.load_models()
 
@@ -87,6 +94,7 @@ class Scene(DirectObject):
         environment = loader.loadModel('meshs/final_blender_plane_col.egg')
         environment.reparentTo(render)
         environment.setHpr(0, -90, 0)
+        self.base = base
 
         # toon starting pos
         self.toon_start = Point3(0, -20, 0)
@@ -120,7 +128,7 @@ class Scene(DirectObject):
         self.toon.setPos(self.toon_start)
         self.toon.loop('Idle')
 
-        self.base.cam.reparentTo(self.toon)
+        #self.base.cam.reparentTo(self.toon)
         self.base.cam.setPosHpr((0, -25, 5), (0, -10, 0))
 
         # AI world and character creation
@@ -128,6 +136,25 @@ class Scene(DirectObject):
         self.AIchar = AICharacter("toon", self.toon, 50, 0.05, 10)
         self.AIworld.addAiChar(self.AIchar)
         self.AIbehaviors = self.AIchar.getAiBehaviors()
+
+    def obstacle(self):
+        self.cube = loader.loadModel('models/cube.egg')
+        self.cube.reparentTo(render)
+        self.cube.setPosHprScale((-5, 30, 1), (90, 0, 0), (1, 2, 1))
+        self.cube.setColor(0, 255, 255)
+
+        self.AIworld.addObstacle(self.cube)
+        self.AIbehaviors.obstacleAvoidance(5)
+        move_1 = self.cube.posInterval(5, Point3(7.5,  30, 1))
+        move_2 = self.cube.posInterval(5, Point3(-5,  30, 1))
+
+        move = Sequence(
+            move_1, move_2
+        )
+
+        move.loop()
+
+        self.obstacle_button.destroy()
 
     def X(self, textEntered):
         # gets the x entry value and converts it to an integer
@@ -145,12 +172,12 @@ class Scene(DirectObject):
         self.arrow = loader.loadModel('models/arrow.egg')
         self.arrow.reparentTo(render)
         self.arrow.setPosHprScale((float(self.get_x), float(self.get_y), 2.5), (0, 0, 0), (2, 2, 2))
-        self.AIworld.addObstacle(self.arrow)
 
         # gets all the behaviors for toon ai chars
         self.taskMgr.add(self.AIUpdate, "AIUpdate")
         # adds PathFindTo task to taskMgr
         self.AIbehaviors.initPathFind('meshs/navmesh.csv')
+
     def path_finding(self):
         # destroys go_button until rendered with go_to button
         self.go_button.destroy()
@@ -161,6 +188,7 @@ class Scene(DirectObject):
         print('\nGoing to', self.selected_pos)
         self.log.write("\nGoing  to ")
         self.log.write(str(self.selected_pos))
+        self.arrow.setColor(255, 0, 0, 0)
 
     def AIUpdate(self, task):
         self.AIworld.update()
@@ -177,40 +205,46 @@ class Scene(DirectObject):
         # The getX and getY functions spit out a long float, so they
         # have to be rounded to match selected pos values.
 
-        if 0 <= x_difference < 10:
+        if 0 <= x_difference < 1:
             toon_pos_x = toon_pos_x - x_difference
             # Subtracts X difference from toon's X pos value
-        if 0 >= x_difference > -10:
+        if 0 >= x_difference > -1:
             toon_pos_x = toon_pos_x + x_difference
             # Adds X difference from toon's X pos value
-        if 0 <= y_difference < 10:
+        if 0 <= y_difference < 1:
             toon_pos_y = toon_pos_y - y_difference
             # Subtracts Y difference from toon's Y pos value
-        if 0 >= y_difference > -10:
+        if 0 >= y_difference > -1:
             toon_pos_y = toon_pos_y + y_difference
             # Adds Y difference to toon's X pos value
         # Checks if the toon's current X or Y difference from the
         # corresponding input X/Y are within a range between 0 and
         # 10.  This makes the toon_pos_x and toon_pos_y round exactly
         # to selected pos when they are greater/less than zero, and less
-        # /greater than 10 or -10.
+        # /greater than 1 or -1.
 
         toon_pos = Vec3(float(toon_pos_x), float(toon_pos_y), 0)
         # organizes toon's current pos to Vec3 format
 
-        # checks if selected pos and toon pos are the same Vec3 value, and
-        # if the path find task is done, or at destination
+        # Checks if selected pos and toon pos are the same Vec3 value, and
+        # if the path find task is done, or at destination.
         if self.selected_pos == toon_pos and self.AIbehaviors.behaviorStatus('pathfollow') == 'done':
             self.toon.loop('Idle')
             self.arrow.remove_node()
             self.log.write('\nCompleted task in')
             self.log.write(str(task.time))
             self.log.write('seconds.')
-            print('Arrived at destination', toon_pos, 'in', str(task.time), 'seconds')
+            print('Arrived at destination', toon_pos, 'in ', str(task.time), 'seconds')
             return Task.done
 
+        # Prints error message if only path follow check comes back positive.
+        # This is due to position calculator not working 100% accurately.
+        elif self.AIbehaviors.behaviorStatus('pathfollow') == 'done':
+            self.arrow.remove_node()
+            print("Error: Missed Target very closely, assuming task done")
+
         # continues path finding task if task isn't done
-        while self.AIbehaviors.behaviorStatus('pathfollow') != 'done':
+        if self.AIbehaviors.behaviorStatus('pathfollow') != 'done':
             return Task.cont
 
     @staticmethod
