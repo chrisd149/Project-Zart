@@ -1,15 +1,13 @@
-# Project Zart v1.2.0
+# Project Zart v1.3.0
 Control a toon using a pathfinding function thorugh a maze, using the A* algorithm made by Panda3D. The current pathfinding is buggy, so beware of crashes and other issues.
 
 Overview video of program [here.](https://youtu.be/aluFqvR8A-Y)
 
 v2.0 will see testing in an offline Toontown enviroment (most likely Toontown Offline) to test further.
 
-![image](https://user-images.githubusercontent.com/48182689/64074317-a13fd380-cc77-11e9-8dc3-c2fb38825f53.png)
-<h6>Start screen</h6>
+![image](https://user-images.githubusercontent.com/48182689/64217997-cdcd3880-ce8d-11e9-8942-99f2fbc68fe8.png)
+<h6>Image of mesh plane and all actors
 
-![image](https://user-images.githubusercontent.com/48182689/64074306-7190cb80-cc77-11e9-8c54-3afec82bc696.png)
-<h6>Arrow is rendered over selected position</h6>
 Project used to be named Panda3D AI Demo, now renamed to Project Zart.
 
 <h2>Prerequisites</h2>
